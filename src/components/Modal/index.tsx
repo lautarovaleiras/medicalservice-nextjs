@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Modal({children, onClose}){
+export default function Modal({children, onClose}:{children:any,onClose:any}){
     
     
     return <div className="modal">
