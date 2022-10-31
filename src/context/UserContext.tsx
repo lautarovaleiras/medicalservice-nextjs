@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react';
 
-const Context =  React.createContext({})
+const Context =  React.createContext<any|null>({})
 
 export  function  UserContextProvider({children}:{children:any}){
     const [jwt, setJwt] = useState(null)

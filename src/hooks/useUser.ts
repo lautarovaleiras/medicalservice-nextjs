@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import loginService from '../services/loginService';
 export default function useUser(){
 
-    const {jwt,setJwt} = useContext(Context)
+    const {jwt,setJwt} = useContext(Context);
 
     const [state, setState] = useState({loading:false, error:false});
 
