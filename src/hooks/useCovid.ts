@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react";
 import  { getMultipleCountryCovidCases } from "../services/getCovidCases";
-export function useCovid({country} = {countries:[]}){
+export function useCovid(country:any = []){
 
     const [loading, updateloading] = useState(false);
   
@@ -16,7 +16,7 @@ export function useCovid({country} = {countries:[]}){
         // Recuperamos el country de local storage
       const countries = country && country.length > 0 ? country : localStorage.getItem('lastCountry') || 'ARGENTINA';
 
-      getMultipleCountryCovidCases({country:countries}).then(covidCases=>{
+      getMultipleCountryCovidCases(countries).then(covidCases=>{
           updateCovidCases(covidCases)
           updateloading(false);
           if(country) localStorage.setItem('lastCountry',country);
