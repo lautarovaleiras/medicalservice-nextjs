@@ -1,3 +1,3 @@
-export default function prettyNumber(number) {
+export default function prettyNumber(number:number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
