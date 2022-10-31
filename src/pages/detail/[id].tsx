@@ -5,7 +5,6 @@ import { useRouter } from "next/router"
 import { useContext, useEffect } from "react"
 
 export default function Detail({params}:{params:any}){
-    const staticConfig = useContext(StaticContext)
     const {turns} = useContext(TurnsContext)
     const { query } = useRouter()
     const router = useRouter()
