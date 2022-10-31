@@ -1,5 +1,5 @@
 
-const data = [
+const data:any = [
     {
       id: 1,
       date: "25/10/22",
