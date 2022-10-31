@@ -41,7 +41,7 @@ export default function Agenda() {
   if (!turns) return <p>No profile data</p>
   
   return (<>
-    {turns && turns.map((turn) => (
+    {turns && turns.map((turn:any) => (
     <Turns
       key={turn.id}
       id={turn.id}
