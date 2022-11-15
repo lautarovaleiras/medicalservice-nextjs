@@ -4,51 +4,56 @@ import { useState, useEffect } from "react";
 import data from "../mock/TurnsDataExample";
 import useUser from "../hooks/useUser";
 import { useRouter } from "next/router";
+import { getSession, useSession } from "next-auth/react";
+import { GetServerSideProps, NextApiRequest } from "next";
+import { NextRequest } from "next/server";
+import { Session } from "next-auth";
 
-export default function Agenda() {
+export default function Agenda(props: Session) {
   // Ejemplo de loading
   const [loading, updateloading] = useState(false);
 
   const [turns, updateTurn] = useState(data);
 
-  const {isLogged} = useUser()
-
-  const router = useRouter()
+  const { data: session } = useSession();
 
   // El guard cacero ( sino esta logeado, no dejo reenderizar esta vista)
- 
 
-  /**
-   * useEffect => onInit() de react
-   * El segundo parametro son las dependencias, si se le pasa
-   * un array vacio, solo se ejecuta una sola vez.
-   *
-   */
-  useEffect(() => {
-    if (!isLogged) router?.push('/login')
-    updateloading(true);
-    updateTurn(data);
-    updateloading(false);
-    
-    
-    
-    
-    
-  }, []);
+  // if(loading) return <i>loadizg</i>
+  // if (!turns) return <p>No profile data</p>
 
-  if (!isLogged) return <i>loading</i>
-  if(loading) return <i>loading</i>
-  if (!turns) return <p>No profile data</p>
-  
-  return (<>
-    {turns && turns.map((turn:any) => (
-    <Turns
-      key={turn.id}
-      id={turn.id}
-      service={turn.service.type}
-      name={turn.client.name}
-      date={turn.date}
-    />
-  ))}
-  </>)
+  return (
+    <>
+      {turns &&
+        turns.map((turn: any) => (
+          <Turns
+            key={turn.id}
+            id={turn.id}
+            service={turn.service.type}
+            name={turn.client.name}
+            date={turn.date}
+          />
+        ))}
+    </>
+  );
 }
+
+/**
+ * getServerSideProps only runs on server-side and never runs on the browser. If a page uses getServerSideProps
+ * @param param0
+ * @returns
+ */
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { session }, // will be passed to the page component as props
+  };
+};
