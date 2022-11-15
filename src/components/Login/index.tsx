@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import {signIn} from 'next-auth/react'
 
 
 import useUser from '../../hooks/useUser';
@@ -22,11 +23,14 @@ export default function Login(){
     }
 
 
-
+    async function handleGoogleSignIn(){
+      signIn('google',{callbackUrl:"http://localhost:3000"})
+    }
     return (
     <>
         {isLoginLoading && <strong>Checking credentials</strong>}
         {!isLoginLoading && (
+          <>
           <form className="form" onSubmit={handleSubmit}>
        
             <input
@@ -44,6 +48,8 @@ export default function Login(){
             />
             <button className="btn">Login</button>
           </form>
+          <button onClick={handleGoogleSignIn}>Google SignIn</button>
+          </>
         )}
         {hasLoginError && <strong>Crentials are invalid</strong>}
       </>

@@ -1,18 +1,22 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { UserContextProvider } from 'context/UserContext';
 import { TurnsContextProvider } from 'context/TurnsContext';
 import Header from '@components/Header';
-export default function App({ Component, pageProps }: AppProps) {
+import { SessionProvider } from "next-auth/react"
+import { Session } from 'next-auth';
+
+
+export default function App({Component,pageProps}: AppProps<{session: Session;}>) {
 
   return (
-    <UserContextProvider>
+    <SessionProvider session={pageProps.session}>
       <TurnsContextProvider>
         <Header/>
+        <Component {...pageProps}  />
+      </TurnsContextProvider> 
+      </SessionProvider>
 
-        <Component {...pageProps} />
-      </TurnsContextProvider>
-    </UserContextProvider>
   );
+
 
 }

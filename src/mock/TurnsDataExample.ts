@@ -26,6 +26,7 @@ const data:any = [
         amount: 500,
       },
       client: {
+        id:1,
         name: "Roberto",
         surname: "Perez",
         birthday: new Date("03/02/1996"),

@@ -15,7 +15,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import useUser from "../../hooks/useUser";
+import { useSession,signOut } from 'next-auth/react';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -80,13 +80,17 @@ export default function Header() {
 
   const handleRegister = () => null;
 
+  const handleLogOut = async ()=>{
+    signOut
+  }
+
   const goToLogin = () =>  null ;
 
   const handleMobileMenuOpen = (event:any) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const {isLogged,logout}=useUser();
+  const { data: session } = useSession()
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -107,8 +111,8 @@ export default function Header() {
         
         
         {
-            isLogged ?
-                <button onClick={logout} >Logout</button>
+            session ?
+                <button onClick={handleLogOut} >Logout</button>
                 : <MenuItem onClick={goToLogin}>Login</MenuItem>
         }
         <MenuItem onClick={handleRegister}>Profile</MenuItem> 
