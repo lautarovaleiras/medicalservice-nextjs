@@ -4,8 +4,17 @@ import Head from "next/head";
 import { useState } from "react";
 
 import { useSession } from "next-auth/react";
-
-export default function Home(props: any) {
+import { Box, Button, Card, CardContent, Container, Grid, InputAdornment, Pagination, SvgIcon, TextField, Typography } from "@mui/material";
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import { Upload as UploadIcon } from '../icons/upload';
+import { Download as DownloadIcon } from '../icons/download';
+import { Search as SearchIcon } from '../icons/search';
+import { AppoimentCard } from "@components/Appoiment/appoiment-card";
+import { AppoimentsListToolbar } from "@components/Appoiment/appoiment-list-toolbar";
+import {appoiments} from '../mock/appoiments';
+import { DashboardLayout } from "@components/dashboard-layout";
+function Home(props: any) {
   const { data: session, status } = useSession();
 
   const [country, setCountry] = useState("");
@@ -19,29 +28,68 @@ export default function Home(props: any) {
     setCountry(evt.target.value.toUpperCase());
   };
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
+
   return (
     <>
-      <Head>
-        <title> Home </title>
-      </Head>
-      <h3>Buscar casos de Covid por pais</h3>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="pais"
-          onChange={handleChangue}
-          value={country}
-        />
-        <button>Buscar</button>
-      </form>
-      {/* <CovidCases params={undefined}></CovidCases> */}
-
-      <h3>Ver listado de turnos</h3>
-      {/* <Link to='/Turnos'>Turnos</Link> */}
-    </>
+    <Head>
+      <title>
+        Products | Material Kit
+      </title>
+    </Head>
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        py: 8
+      }}
+    >
+      <Container maxWidth={false}>
+        <AppoimentsListToolbar />
+        <Box sx={{ pt: 3 }}>
+          <Grid
+            container
+            spacing={3}
+          >
+            {appoiments.map((product) => (
+              <Grid
+                item
+                key={product.id}
+                lg={4}
+                md={6}
+                xs={12}
+              >
+                <AppoimentCard product={product} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            pt: 3
+          }}
+        >
+          <Pagination
+            color="primary"
+            count={3}
+            size="small"
+          />
+        </Box>
+      </Container>
+    </Box>
+  </>
   );
 }
 
+export default Home;
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = await getSession(context);
     console.log(session);
