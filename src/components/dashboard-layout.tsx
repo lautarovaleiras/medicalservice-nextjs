@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DashboardNavbar } from './dashboard-navbar';
@@ -15,8 +15,13 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 }));
 
 export const DashboardLayout = (props:any) => {
-  const { children } = props;
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [mounted,setMounted] = useState(false);
+  const { children } = props;
+
+  // Fix issue hydration mount (SSR)
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
 
   return (
     <>
