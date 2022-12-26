@@ -6,10 +6,16 @@ const patientSchema = new mongoose.Schema(
   {
    
     fullName: { type: String, required: true },
-    dni:{type:String,required:true},
-    address: { type: String, required: true },
-    city: { type: String, required: true },
-    postalCode: { type: String, required: true },
+    dni:{type:String,unique: true, required:true},
+    birthday:{type:Date, required:true},
+    email:{type:String, required:true},
+    phone:{type:String, required:true},
+    address: {
+      city: { type: String, lowercase: true, trim: true },
+      state: { type: String, lowercase: true, trim: true },
+      street: { type: String, lowercase: true, trim: true },
+      postalCode: { type: String, required: true },
+    },
     prepaidMedicine : { type: String, required: false },
     idPrepaidMedicine: { type: String, required: false },
     
@@ -19,5 +25,5 @@ const patientSchema = new mongoose.Schema(
   }
 );
 
-const Patient = mongoose.models.patientSchema || mongoose.model('Patient', patientSchema);
+const Patient = mongoose.models.Patient || mongoose.model('Patient', patientSchema);
 export default Patient;
